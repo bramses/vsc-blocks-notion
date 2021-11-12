@@ -1,11 +1,13 @@
 {
   "name": "vsc-blocks-notion",
   "displayName": "Code to Notion",
-  "description": "send code blocks to notion page",
+  "description": "highlight code blocks; create notion page",
   "author": {
     "name": "Bram Adams",
     "url": "https://bramadams.dev/"
   },
+  "publisher": "sharingfiction",
+  "repository": {"type": "git" ,"url": "https://github.com/bramses/vsc-blocks-notion"},
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.62.0"
