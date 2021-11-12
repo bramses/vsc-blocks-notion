@@ -1,7 +1,11 @@
 {
   "name": "vsc-blocks-notion",
-  "displayName": "vsc-blocks-notion",
+  "displayName": "Code to Notion",
   "description": "send code blocks to notion page",
+  "author": {
+    "name": "Bram Adams",
+    "url": "https://bramadams.dev/"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.62.0"
@@ -10,20 +14,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vsc-blocks-notion.helloWorld"
+    "onCommand:vsc-blocks-notion.toNotion"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vsc-blocks-notion.helloWorld",
-        "title": "Hello World"
+        "command": "vsc-blocks-notion.toNotion",
+        "title": "Send Block to Notion"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "vsc-blocks-notion.helloWorld",
+          "command": "vsc-blocks-notion.toNotion",
           "group": "navigation"
         }
       ]

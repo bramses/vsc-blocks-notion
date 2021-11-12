@@ -87,6 +87,8 @@ const FILETYPES:any = {
 	"py": "python",
 	"html": "html",
 	"rb": "ruby",
+    "zshrc": "shell",
+    "css": "css"
 };
 
 async function showInputBox() {
@@ -101,32 +103,37 @@ async function showInputBox() {
 
 
 const logic = async (editor: vscode.TextEditor | undefined) => {
-	let codeBlock: string | undefined = editor?.document.getText(editor.selection);
-	const filename: string[] | undefined = editor?.document.fileName.split('.');
-	const fileType: string | undefined = filename?.slice(-1)[0];
-
-
-    if (codeBlock === undefined) {
-        vscode.window.showErrorMessage('Please select some code');
-        return;
+	try {
+        let codeBlock: string | undefined = editor?.document.getText(editor.selection);
+        	const filename: string[] | undefined = editor?.document.fileName.split('.');
+        	const fileType: string | undefined = filename?.slice(-1)[0];
+        
+        
+            if (codeBlock === undefined) {
+                vscode.window.showErrorMessage('Please select some code');
+                return;
+            }
+            if (fileType === undefined) {
+                vscode.window.showErrorMessage('Please select a file');
+                return;
+            }
+            const language = FILETYPES[fileType];
+            if (language === undefined) {
+                vscode.window.showErrorMessage('Please select a valid file');
+                return;
+            }
+        
+            const name = await showInputBox();
+            if (name === undefined) {
+                return;
+            }
+        
+            const response = await add_api_page(name, codeBlock, language);
+            return response.url;
+    } catch (err) {
+        console.error(err);
+        return null;
     }
-    if (fileType === undefined) {
-        vscode.window.showErrorMessage('Please select a file');
-        return;
-    }
-    const language = FILETYPES[fileType];
-    if (language === undefined) {
-        vscode.window.showErrorMessage('Please select a valid file');
-        return;
-    }
-
-    const name = await showInputBox();
-    if (name === undefined) {
-        return;
-    }
-
-    const response = await add_api_page(name, codeBlock, language);
-    return response.url;
 };
 
 
@@ -134,7 +141,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "vsc-blocks-notion" is now active!');
 
-	let disposable = vscode.commands.registerCommand('vsc-blocks-notion.helloWorld', async () => {
+	let disposable = vscode.commands.registerCommand('vsc-blocks-notion.toNotion', async () => {
 		const editor = vscode.window.activeTextEditor;
 		const url = await logic(editor);
         if (url) {
@@ -145,7 +152,7 @@ export function activate(context: vscode.ExtensionContext) {
             });
             
         } else {
-            vscode.window.showErrorMessage('Could not create page');
+            vscode.window.showErrorMessage('Could not create page -- check dev console');
         }
 	});
 
